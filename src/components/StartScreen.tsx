@@ -1,12 +1,17 @@
 import "./StartScreen.css";
 
-export function StartScreen() {
+export type StartScreenProps = {
+  goToGame: () => void;
+};
+
+export function StartScreen(props: StartScreenProps) {
   return (
     <div className="start-screen">
       <div className="panel">
-        <span>Do you want to play a game?</span>
-        <br />
-        <button>Begin</button>
+        <span className="invite">Do you want to play a game?</span>
+        <button onClick={() => props.goToGame()} className="button">
+          Begin
+        </button>
       </div>
     </div>
   );
