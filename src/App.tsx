@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import "./App.css";
 import { Game } from "./components/Game";
+import { GameOver } from "./components/GameOver";
 import { StartScreen } from "./components/StartScreen";
 
 const queryClient = new QueryClient({
@@ -18,6 +19,7 @@ const queryClient = new QueryClient({
 
 function App() {
   const [screen, setScreen] = useState<"start" | "game" | "gameOver">("start");
+  const [result, setResult] = useState<"WIN" | "LOSE" | null>(null);
 
   function unreachableCase(_: never) {
     return <StartScreen goToGame={() => setScreen("game")} />;
@@ -33,14 +35,23 @@ function App() {
           case "game":
             return (
               <Game
-                goToGameOver={(winOrLose: "WIN" | "LOSE") =>
-                  setScreen("gameOver")
-                }
+                goToGameOver={(winOrLose: "WIN" | "LOSE") => {
+                  setScreen("gameOver");
+                  setResult(winOrLose);
+                }}
               />
             );
 
           case "gameOver":
-            return <StartScreen goToGame={() => setScreen("game")} />;
+            return (
+              <GameOver
+                result={result!}
+                goToGame={() => {
+                  setScreen("game");
+                  setResult(null);
+                }}
+              />
+            );
 
           default:
             unreachableCase(screen);

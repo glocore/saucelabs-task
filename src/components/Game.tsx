@@ -1,60 +1,62 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import "./Game.css";
+import billy from "../assets/billy.jpeg";
 
 type GameProps = {
   goToGameOver: (winOrLose: "WIN" | "LOSE") => void;
 };
 
 export function Game(props: GameProps) {
-  const { data, refetch } = useQuery(["questions"], getQuestions);
-
   const [questions, setQuestions] = useState<Question[]>();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState("");
   const [score, setScore] = useState(0);
   const [mistakes, setMistakes] = useState(0);
-  const [toast, setToast] = useState<{
-    type: "correct" | "wrong";
-    message: string;
-  } | null>(null);
+  const [toast, setToast] = useState<Toast | null>(null);
 
   function clearInput() {
     setToast(null);
     setAnswer("");
   }
 
-  useEffect(() => {
-    if (!data) return;
+  const { refetch, isLoading, isError } = useQuery(
+    ["questions"],
+    getQuestions,
+    {
+      onSuccess: (data) => {
+        if (!data) return;
 
-    if (!questions) {
-      setQuestions(data);
-      return;
+        if (!questions) {
+          setQuestions(data);
+          return;
+        }
+
+        const newQuestions = data.filter((question) => {
+          return !questions.some((q) => q.answerSha1 === question.answerSha1);
+        });
+
+        if (!newQuestions.length) return props.goToGameOver("WIN");
+
+        setQuestions((questions) => [...questions!, ...newQuestions]);
+        setCurrentQuestionIndex((i) => i + 1);
+        clearInput();
+      },
     }
-
-    const newQuestions = data.filter((question) => {
-      return !questions.some((q) => q.answerSha1 === question.answerSha1);
-    });
-
-    if (!newQuestions.length) return props.goToGameOver("WIN");
-
-    setQuestions((questions) => [...questions!, ...newQuestions]);
-    setCurrentQuestionIndex((i) => i + 1);
-    clearInput();
-  }, [data]);
+  );
 
   const currentQuestion = questions?.[currentQuestionIndex];
 
   function nextQuestion() {
     const didExhaustQuestions = currentQuestionIndex === questions!.length - 1;
 
-    if (didExhaustQuestions) refetch();
-    else {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (didExhaustQuestions) refetch();
+      else {
         setCurrentQuestionIndex((i) => i + 1);
         clearInput();
-      }, 0);
-    }
+      }
+    }, 2000);
   }
 
   function handleCorrectAnswer() {
@@ -96,37 +98,49 @@ export function Game(props: GameProps) {
   return (
     <div className="game">
       <div className="frame">
-        <div className="score">
-          Score: {score}&nbsp; | &nbsp;Mistakes: {mistakes}
-        </div>
-        {currentQuestion ? (
-          <div>
-            <div className="question">{currentQuestion.question}</div>
-            <form onSubmit={handleSubmit} className="response">
-              <input
-                placeholder="Answer"
-                name="answer"
-                onChange={(e) => setAnswer(e.target.value)}
-                value={answer}
-                disabled={!!toast}
-                autoFocus
-              />
-              <input
-                type="submit"
-                value="Submit"
-                disabled={!answer || !!toast}
-                className="button"
-              />
-            </form>
+        {isLoading ? (
+          <div className="loading">
+            <img src={billy} className="loading-image" />
+          </div>
+        ) : isError ? (
+          <div className="loading">
+            Something's wrong. Check your connection and reload the page.
           </div>
         ) : (
-          <div />
+          <>
+            <div className="score">
+              Score: {score}&nbsp; | &nbsp;Lives: {3 - mistakes}
+            </div>
+            {currentQuestion ? (
+              <div>
+                <div className="question">{currentQuestion.question}</div>
+                <form onSubmit={handleSubmit} className="response">
+                  <input
+                    placeholder="Answer"
+                    name="answer"
+                    onChange={(e) => setAnswer(e.target.value)}
+                    value={answer}
+                    disabled={!!toast}
+                    autoFocus
+                  />
+                  <input
+                    type="submit"
+                    value="Submit"
+                    disabled={!answer || !!toast}
+                    className="button"
+                  />
+                </form>
+              </div>
+            ) : (
+              <div />
+            )}
+            {
+              <div className={`toast toast-${toast?.type}`}>
+                {toast?.message ?? "\u00a0" /* nbsp */}
+              </div>
+            }
+          </>
         )}
-        {
-          <div className={`toast toast-${toast?.type}`}>
-            {toast?.message ?? "\u00a0" /* nbsp */}
-          </div>
-        }
       </div>
     </div>
   );
@@ -154,4 +168,9 @@ async function checkAnswer(answer: string, answerSha1: string) {
 type Question = {
   answerSha1: string;
   question: string;
+};
+
+type Toast = {
+  type: "correct" | "wrong";
+  message: string;
 };
