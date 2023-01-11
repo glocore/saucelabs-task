@@ -1,28 +1,40 @@
 :root {
-  --border: 1px solid #8a8a8a;
-  --background-primary: #242424;
-  --background-secondary: #767676;
-  --foreground-primary: rgba(255, 255, 255, 0.87);
-
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: var(--foreground-primary);
-  background-color: var(--background-primary);
-
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --header-height: 50px;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  color: var(--foreground-primary);
+  background-color: var(--background-primary);
+
+}
+
+body.dark {
+  --border: 1px solid #8a8a8a;
+  --background-primary: #242424;
+  --background-secondary: #767676;
+  --foreground-primary: rgba(255, 255, 255, 0.87);
+}
+
+body.light {
+  --background-primary: #ffffff;
+  --background-secondary: #EEEEEE;
+  --foreground-primary: #213547;
+  --border: 1px solid #b8b8b8;
 }
 
 #root {
@@ -37,6 +49,8 @@ input {
   padding: 0.6em 1.2em;
   border-radius: 8px;
   border: var(--border);
+  background-color: var(--background-primary);
+  color: var(--foreground-primary);
 }
 
 .button {
@@ -46,7 +60,8 @@ input {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  color: var(--foreground-primary);
+  background-color: var(--background-secondary);
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -57,21 +72,5 @@ input {
 
 .button:disabled {
   cursor: not-allowed;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --background-primary: #ffffff;
-    --background-secondary: #EEEEEE;
-    --foreground-primary: #213547;
-    --border: 1px solid #b8b8b8;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-  
-  .button {
-    background-color: #f4f4f4;
-  }
+  opacity: 0.5;
 }

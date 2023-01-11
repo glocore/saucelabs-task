@@ -1,8 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import classes from "./App.module.css";
 import { Game } from "./components/Game";
 import { GameOver } from "./components/GameOver";
 import { StartScreen } from "./components/StartScreen";
+import { ThemePicker } from "./components/ThemePicker";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,7 +18,7 @@ const queryClient = new QueryClient({
   },
 });
 
-function App() {
+export default function App() {
   const [screen, setScreen] = useState<"start" | "game" | "gameOver">("start");
   const [result, setResult] = useState<"WIN" | "LOSE" | null>(null);
 
@@ -26,6 +28,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <div className={classes.header}>
+        <ThemePicker />
+      </div>
       {(function () {
         switch (screen) {
           case "start":
@@ -59,5 +64,3 @@ function App() {
     </QueryClientProvider>
   );
 }
-
-export default App;
