@@ -11,7 +11,7 @@ export function StartScreen(props: StartScreenProps) {
       <div className={classes.panel}>
         <img src={billy} className={classes.billy} />
         <span className={classes.invite}>Do you want to play a game?</span>
-        <button onClick={() => props.goToGame()} className="button">
+        <button onClick={() => props.goToGame()} className="button" autoFocus>
           Begin
         </button>
       </div>

@@ -107,13 +107,14 @@ export function Game(props: GameProps) {
             Something's wrong. Check your connection and reload the page.
           </div>
         ) : (
-          <>
+          <div className={classes["game-ui"]}>
             <div className={classes.score}>
-              Score: {score}&nbsp; | &nbsp;Lives: {3 - mistakes}
+              <div>Score: {score}</div>
+              <div>Lives: {3 - mistakes}</div>
             </div>
             {currentQuestion ? (
-              <div>
-                <div className={classes.question}>
+              <div className={classes.question}>
+                <div className={classes["question-text"]}>
                   {currentQuestion.question}
                 </div>
                 <form onSubmit={handleSubmit} className={classes.response}>
@@ -129,7 +130,7 @@ export function Game(props: GameProps) {
                     type="submit"
                     value="Submit"
                     disabled={!answer || !!toast}
-                    className="button"
+                    className={`button ${classes.submit}`}
                   />
                 </form>
               </div>
@@ -145,7 +146,7 @@ export function Game(props: GameProps) {
                 {toast?.message ?? "\u00a0" /* nbsp */}
               </div>
             }
-          </>
+          </div>
         )}
       </div>
     </div>
