@@ -4,7 +4,7 @@ import classes from "./Game.module.css";
 import billy from "../assets/billy.jpeg";
 
 type GameProps = {
-  goToGameOver: (winOrLose: "WIN" | "LOSE") => void;
+  goToGameOver: (winOrLose: "WIN" | "LOSE", finalScore: number) => void;
 };
 
 export function Game(props: GameProps) {
@@ -36,7 +36,7 @@ export function Game(props: GameProps) {
           return !questions.some((q) => q.answerSha1 === question.answerSha1);
         });
 
-        if (!newQuestions.length) return props.goToGameOver("WIN");
+        if (!newQuestions.length) return props.goToGameOver("WIN", score);
 
         setQuestions((questions) => [...questions!, ...newQuestions]);
         setCurrentQuestionIndex((i) => i + 1);
@@ -78,7 +78,7 @@ export function Game(props: GameProps) {
     const newMistakes = mistakes + 1;
 
     if (newMistakes >= 3) {
-      props.goToGameOver("LOSE");
+      props.goToGameOver("LOSE", score);
       return;
     }
 

@@ -3,6 +3,7 @@ import billy from "../assets/billy.jpeg";
 
 type GameOverProps = {
   result: "WIN" | "LOSE";
+  score: number;
   goToGame: () => void;
 };
 
@@ -14,9 +15,11 @@ export function GameOver(props: GameOverProps) {
         <span className={classes.message}>GAME OVER</span>
         <span className={classes.result}>
           {props.result === "WIN" ? "You win." : "You lose."}
+          <br />
+          Final Score: {props.score}
         </span>
 
-        <button onClick={() => props.goToGame()} className="button">
+        <button onClick={() => props.goToGame()} className="button" autoFocus>
           Play again
         </button>
       </div>

@@ -20,6 +20,7 @@ const queryClient = new QueryClient({
 
 export default function App() {
   const [screen, setScreen] = useState<"start" | "game" | "gameOver">("start");
+  const [score, setScore] = useState(0);
   const [result, setResult] = useState<"WIN" | "LOSE" | null>(null);
 
   function unreachableCase(_: never) {
@@ -39,9 +40,13 @@ export default function App() {
           case "game":
             return (
               <Game
-                goToGameOver={(winOrLose: "WIN" | "LOSE") => {
+                goToGameOver={(
+                  winOrLose: "WIN" | "LOSE",
+                  finalScore: number
+                ) => {
                   setScreen("gameOver");
                   setResult(winOrLose);
+                  setScore(finalScore);
                 }}
               />
             );
@@ -50,6 +55,7 @@ export default function App() {
             return (
               <GameOver
                 result={result!}
+                score={score}
                 goToGame={() => {
                   setScreen("game");
                   setResult(null);
