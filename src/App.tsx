@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import "./App.css";
 import { Game } from "./components/Game";
 import { GameOver } from "./components/GameOver";
 import { StartScreen } from "./components/StartScreen";

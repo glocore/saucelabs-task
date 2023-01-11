@@ -43,7 +43,7 @@
   text-align: center;
   padding: 1em;
   margin-bottom: 1em;
-  background-color: #EEEEEE;
+  background-color: var(--background-secondary);
 }
 
 .question {
@@ -62,13 +62,16 @@
 .toast {
   text-align: center;
   padding: 1em;
-  background-color: #EEEEEE;
+  background-color: var(--background-secondary);
+  font-weight: 700;
 }
 
 .toast-correct {
   background-color: #aeffae;
+  color: #446f44;
 }
 
 .toast-wrong {
   background-color: #ffaeae;
+  color: #7d3c3c;
 }

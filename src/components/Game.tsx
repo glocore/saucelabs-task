@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import "./Game.css";
+import classes from "./Game.module.css";
 import billy from "../assets/billy.jpeg";
 
 type GameProps = {
@@ -96,25 +96,27 @@ export function Game(props: GameProps) {
   }
 
   return (
-    <div className="game">
-      <div className="frame">
+    <div className={classes.game}>
+      <div className={classes.frame}>
         {isLoading ? (
-          <div className="loading">
-            <img src={billy} className="loading-image" />
+          <div className={classes.loading}>
+            <img src={billy} className={classes["loading-image"]} />
           </div>
         ) : isError ? (
-          <div className="loading">
+          <div className={classes.loading}>
             Something's wrong. Check your connection and reload the page.
           </div>
         ) : (
           <>
-            <div className="score">
+            <div className={classes.score}>
               Score: {score}&nbsp; | &nbsp;Lives: {3 - mistakes}
             </div>
             {currentQuestion ? (
               <div>
-                <div className="question">{currentQuestion.question}</div>
-                <form onSubmit={handleSubmit} className="response">
+                <div className={classes.question}>
+                  {currentQuestion.question}
+                </div>
+                <form onSubmit={handleSubmit} className={classes.response}>
                   <input
                     placeholder="Answer"
                     name="answer"
@@ -135,7 +137,11 @@ export function Game(props: GameProps) {
               <div />
             )}
             {
-              <div className={`toast toast-${toast?.type}`}>
+              <div
+                className={`${classes.toast} ${
+                  classes[`toast-${toast?.type}`]
+                }`}
+              >
                 {toast?.message ?? "\u00a0" /* nbsp */}
               </div>
             }

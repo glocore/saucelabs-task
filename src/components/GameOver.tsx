@@ -1,4 +1,4 @@
-import "./GameOver.css";
+import classes from "./GameOver.module.css";
 
 type GameOverProps = {
   result: "WIN" | "LOSE";
@@ -7,10 +7,10 @@ type GameOverProps = {
 
 export function GameOver(props: GameOverProps) {
   return (
-    <div className="game-over">
-      <div className="panel">
-        <span className="message">GAME OVER</span>
-        <span className="result">
+    <div className={classes["game-over"]}>
+      <div className={classes.panel}>
+        <span className={classes.message}>GAME OVER</span>
+        <span className={classes.result}>
           {props.result === "WIN" ? "You win." : "You lose."}
         </span>
 

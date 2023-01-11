@@ -1,4 +1,4 @@
-import "./StartScreen.css";
+import classes from "./StartScreen.module.css";
 import billy from "../assets/billy.jpeg";
 
 export type StartScreenProps = {
@@ -7,10 +7,10 @@ export type StartScreenProps = {
 
 export function StartScreen(props: StartScreenProps) {
   return (
-    <div className="start-screen">
-      <div className="panel">
-        <img src={billy} className="billy" />
-        <span className="invite">Do you want to play a game?</span>
+    <div className={classes["start-screen"]}>
+      <div className={classes.panel}>
+        <img src={billy} className={classes.billy} />
+        <span className={classes.invite}>Do you want to play a game?</span>
         <button onClick={() => props.goToGame()} className="button">
           Begin
         </button>
