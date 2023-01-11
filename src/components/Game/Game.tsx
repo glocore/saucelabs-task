@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import billy from "../../assets/billy.jpeg";
 import classes from "./Game.module.css";
-import billy from "../assets/billy.jpeg";
 
 type GameProps = {
   goToGameOver: (winOrLose: "WIN" | "LOSE", finalScore: number) => void;
@@ -163,7 +163,7 @@ async function getQuestions() {
   return data.questions as Question[];
 }
 
-async function checkAnswer(answer: string, answerSha1: string) {
+export async function checkAnswer(answer: string, answerSha1: string) {
   const encoder = new TextEncoder();
   const buffer = encoder.encode(answer.toLowerCase());
   const digest = await crypto.subtle.digest("SHA-1", buffer);

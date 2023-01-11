@@ -50,6 +50,7 @@
 
 .score {
   text-align: center;
+  font-weight: bold;
   padding: 2em;
   background-color: var(--background-secondary);
   grid-row: 1 / -1;
